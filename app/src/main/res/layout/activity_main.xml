@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="#F5F5F7"
+              android:gravity="center_horizontal"
+              android:padding="24dp">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIX SNIPER"
+            android:letterSpacing="0.1"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#888888"
+            android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="32dp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="4dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CURRENT VIX"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#AAAAAA"/>
+
+        <TextView
+                android:id="@+id/txtVixValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--.--"
+                android:textSize="64sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
+
+        <TextView
+                android:id="@+id/txtStrategy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Waiting for data..."
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:background="#EEEEEE"
+                android:textColor="#666666"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/txtSystemStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status: Checking..."
+            android:textAlignment="center"
+            android:padding="12dp"
+            android:background="#E0E0E0"
+            android:textColor="#555555"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CAPITAL SETTINGS"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textColor="#888888"
+            android:layout_marginBottom="8dp"/>
+
+    <EditText
+            android:id="@+id/inputCash"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_card"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:hint="$0.00"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"/>
+
+    <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="ACTIVATE SNIPER"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#000000"/>
+
+    <TextView
+            android:id="@+id/txtLastUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last checked: Never"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:layout_marginTop="16dp"/>
+
+</LinearLayout>
