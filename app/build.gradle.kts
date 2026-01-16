@@ -56,6 +56,7 @@ dependencies {
     // The Specific Tools for Your VIX App
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     // Testing Tools (Standard)
     testImplementation("junit:junit:4.13.2")
