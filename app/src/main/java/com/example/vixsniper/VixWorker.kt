@@ -10,111 +10,135 @@ import androidx.work.WorkerParameters
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class VixWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
     override fun doWork(): Result {
         val prefs = applicationContext.getSharedPreferences("VixPrefs", Context.MODE_PRIVATE)
+        val client = OkHttpClient()
 
         try {
-            // 1. Setup Client
-            val client = OkHttpClient()
+            // 1. Fetch Data for VIX, SPY, and SSO
+            // We use helper function to keep code clean
+            val vixData = fetchTicker(client, "^VIX")
+            val spyData = fetchTicker(client, "SPY")
+            val ssoData = fetchTicker(client, "SSO")
 
-            // 2. Build Request (Pretending to be a Browser to avoid 403 blocks)
-            val request = Request.Builder()
-                .url("https://query1.finance.yahoo.com/v8/finance/chart/%5EVIX?interval=1d&range=1d")
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-                .build()
-
-            // 3. Execute Network Call
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    val errorMsg = "Server Error: ${response.code} ${response.message}"
-                    prefs.edit().putString("LAST_ERROR", errorMsg).apply()
-                    return Result.failure()
-                }
-
-                val jsonStr = response.body?.string()
-                if (jsonStr == null) {
-                    prefs.edit().putString("LAST_ERROR", "Empty Response").apply()
-                    return Result.failure()
-                }
-
-                // 4. Parse JSON
-                val root = JSONObject(jsonStr)
-                val result = root.getJSONObject("chart").getJSONArray("result").getJSONObject(0)
-                val meta = result.getJSONObject("meta")
-
-                // --- CRASH FIX: Manual Math Logic ---
-                val currentVix = meta.getDouble("regularMarketPrice")
-
-                // Get the 'Previous Close' safely. If missing, use current price (0% change).
-                val previousClose = meta.optDouble("chartPreviousClose", currentVix)
-
-                // Manually calculate % Change: ((Current - Prev) / Prev) * 100
-                val changePercent = if (previousClose > 0) {
-                    ((currentVix - previousClose) / previousClose) * 100
-                } else {
-                    0.0
-                }
-                // ------------------------------------
-
-                // 5. Load User Data
-                val totalCash = prefs.getFloat("USER_CASH", 10000f)
-                val lastNotifiedZone = prefs.getInt("LAST_ZONE", 0)
-                val (newZone, message) = analyzeVixStrategy(currentVix, totalCash)
-
-                // 6. Save Data to Memory (So UI can see it)
-                prefs.edit()
-                    .putFloat("LATEST_VIX", currentVix.toFloat())
-                    .putFloat("LATEST_CHANGE", changePercent.toFloat())
-                    .putLong("LAST_UPDATE_TIME", System.currentTimeMillis())
-                    .putString("LAST_ERROR", "No Error") // Clear any old errors
-                    .apply()
-
-                // 7. Notification Logic (Anti-Spam Filter)
-                // Only notify if we moved to a new zone (e.g., from Calm -> Warning)
-                if (newZone != lastNotifiedZone && newZone != 0) {
-                    sendNotification(currentVix, message)
-                    prefs.edit().putInt("LAST_ZONE", newZone).apply()
-                }
-
+            if (vixData == null || spyData == null || ssoData == null) {
+                logAudit(prefs, "ERROR", "Failed to fetch market data")
+                return Result.failure()
             }
+
+            // 2. Read Dynamic Strategy Settings
+            val levelCrisis = prefs.getFloat("THRESHOLD_CRISIS", 45.0f)
+            val levelPanic = prefs.getFloat("THRESHOLD_PANIC", 30.0f)
+            val levelCorrection = prefs.getFloat("THRESHOLD_CORRECTION", 25.0f)
+            val totalCash = prefs.getFloat("USER_CASH", 10000f)
+
+            // 3. Analyze Strategy
+            val currentVix = vixData.first
+            val tier1 = (totalCash * 0.30).toInt()
+            val tier2 = (totalCash * 0.30).toInt()
+            val tier3 = (totalCash * 0.40).toInt()
+
+            val (newZone, message) = when {
+                currentVix >= levelCrisis -> 3 to "☢️ CRISIS (VIX $currentVix). BUY SSO $$tier3!"
+                currentVix >= levelPanic -> 2 to "🚨 PANIC (VIX $currentVix). BUY SSO $$tier2."
+                currentVix >= levelCorrection -> 1 to "⚠️ CORRECTION (VIX $currentVix). BUY SSO $$tier1."
+                currentVix <= 12.0 -> -1 to "✅ CALM (VIX $currentVix). Sell SSO/Profit."
+                else -> 0 to "Sleep mode. VIX is $currentVix."
+            }
+
+            // 4. Save ALL Data (Market Context + Audit)
+            prefs.edit()
+                // VIX
+                .putFloat("LATEST_VIX", vixData.first.toFloat())
+                .putFloat("LATEST_CHANGE", vixData.second.toFloat())
+                // SPY
+                .putFloat("LATEST_SPY", spyData.first.toFloat())
+                .putFloat("CHANGE_SPY", spyData.second.toFloat())
+                // SSO
+                .putFloat("LATEST_SSO", ssoData.first.toFloat())
+                .putFloat("CHANGE_SSO", ssoData.second.toFloat())
+                // Meta
+                .putLong("LAST_UPDATE_TIME", System.currentTimeMillis())
+                .putString("LAST_ERROR", "No Error")
+                .apply()
+
+            val lastNotifiedZone = prefs.getInt("LAST_ZONE", 0)
+
+            // Always log the check so you have history
+            logAudit(prefs, "CHECK", "VIX:$currentVix | Zone:$newZone | LastZone:$lastNotifiedZone")
+
+            // --- RE-ENABLED ANTI-SPAM FILTER ---
+            // Only alert if the zone CHANGED (e.g., Calm -> Warning)
+            if (newZone != lastNotifiedZone && newZone != 0) {
+                sendNotification(currentVix, message)
+                logAudit(prefs, "ALERT", "Sent Notification: $message")
+                prefs.edit().putInt("LAST_ZONE", newZone).apply()
+            }
+
             return Result.success()
 
         } catch (e: Exception) {
             e.printStackTrace()
-            // Save the exact crash reason so you can see it on the phone screen
-            val crashMsg = "Crash: ${e.message}"
-            prefs.edit().putString("LAST_ERROR", crashMsg).apply()
+            logAudit(prefs, "CRASH", e.message ?: "Unknown Error")
             return Result.failure()
         }
     }
 
-    private fun analyzeVixStrategy(vix: Double, cash: Float): Pair<Int, String> {
-        val tier1Amount = (cash * 0.30).toInt()
-        val tier2Amount = (cash * 0.30).toInt()
-        val tier3Amount = (cash * 0.40).toInt()
+    // --- HELPER 1: Fetch Any Ticker ---
+    private fun fetchTicker(client: OkHttpClient, symbol: String): Pair<Double, Double>? {
+        try {
+            val request = Request.Builder()
+                .url("https://query1.finance.yahoo.com/v8/finance/chart/$symbol?interval=1d&range=1d")
+                .addHeader("User-Agent", "Mozilla/5.0")
+                .build()
 
-        return when {
-            vix >= 45.0 -> 3 to "☢️ CRISIS (VIX $vix). Buy $$tier3Amount!"
-            vix >= 30.0 -> 2 to "🚨 PANIC (VIX $vix). Buy $$tier2Amount."
-            vix >= 25.0 -> 1 to "⚠️ CORRECTION (VIX $vix). Buy $$tier1Amount."
-            vix <= 12.0 -> -1 to "✅ CALM (VIX $vix). Consider taking profits."
-            else -> 0 to "Sleep mode. VIX is $vix."
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) return null
+                val jsonStr = response.body?.string() ?: return null
+                val root = JSONObject(jsonStr)
+                val result = root.getJSONObject("chart").getJSONArray("result").getJSONObject(0)
+                val meta = result.getJSONObject("meta")
+
+                val price = meta.getDouble("regularMarketPrice")
+                val prevClose = meta.optDouble("chartPreviousClose", price)
+
+                val changePercent = if (prevClose > 0) ((price - prevClose) / prevClose) * 100 else 0.0
+                return Pair(price, changePercent)
+            }
+        } catch (e: Exception) {
+            return null
         }
+    }
+
+    // --- HELPER 2: Audit Logger ---
+    private fun logAudit(prefs: android.content.SharedPreferences, type: String, msg: String) {
+        val sdf = SimpleDateFormat("dd/MM HH:mm", Locale.getDefault())
+        val timestamp = sdf.format(Date())
+        val newEntry = "[$timestamp] $type: $msg"
+
+        // Get existing log, add new one, keep last 20 entries only
+        val currentLog = prefs.getString("AUDIT_LOG", "") ?: ""
+        val logList = currentLog.split("|").toMutableList()
+        logList.add(0, newEntry) // Add to top
+        if (logList.size > 20) logList.removeAt(logList.lastIndex) // Trim old logs
+
+        prefs.edit().putString("AUDIT_LOG", logList.joinToString("|")).apply()
     }
 
     private fun sendNotification(vix: Double, text: String) {
         val channelId = "VIX_ALERTS"
         val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId, "Vix Sniper Alerts", NotificationManager.IMPORTANCE_HIGH)
             manager.createNotificationChannel(channel)
         }
-
         val notification = NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("VIX Alert: $vix")
@@ -123,11 +147,6 @@ class VixWorker(appContext: Context, workerParams: WorkerParameters) :
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .build()
-
-        try {
-            manager.notify(1, notification)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        try { manager.notify(1, notification) } catch (e: Exception) { e.printStackTrace() }
     }
 }
