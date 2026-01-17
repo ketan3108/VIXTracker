@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnHistory: ImageView
 
     private var isManualUpdate = false
+    private lateinit var btnReport: ImageView
 
     // --- PERMISSION LAUNCHER (Android 13+) ---
     private val requestPermissionLauncher = registerForActivityResult(
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         swipeRefresh = findViewById(R.id.swipeRefresh)
         btnSettings = findViewById(R.id.btnSettings)
         btnHistory = findViewById(R.id.btnHistory)
+        btnReport = findViewById(R.id.btnReport)
 
         val prefs = getSharedPreferences("VixPrefs", Context.MODE_PRIVATE)
         inputCash.setText(prefs.getFloat("USER_CASH", 10000f).toString())
@@ -118,6 +120,11 @@ class MainActivity : AppCompatActivity() {
 
         // 4. HISTORY BUTTON
         btnHistory.setOnClickListener { showAuditLog() }
+
+        btnReport.setOnClickListener {
+            val intent = android.content.Intent(this, ReportActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun askForNotificationPermission() {

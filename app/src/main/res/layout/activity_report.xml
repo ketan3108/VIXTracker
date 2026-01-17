@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_app"
+            android:fillViewport="true">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_dark"
+                android:padding="24dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AUDITED PERFORMANCE"
+                    android:textColor="@color/vix_green"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.15"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2010 - 2026 LOGS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data Source: Yahoo Finance (Adj Close)"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="10sp"
+                    android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:baselineAligned="false">
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_dark"
+                    android:padding="16dp"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="8dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TOTAL RETURN"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="9sp"
+                        android:textStyle="bold"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+1,850%"
+                        android:textColor="@color/vix_green"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_card_dark"
+                    android:padding="16dp"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ALPHA vs SPY"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="9sp"
+                        android:textStyle="bold"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2.5x"
+                        android:textColor="@color/vix_orange"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. THE CORE ENGINE (SSO)"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="24dp"
+                android:layout_marginTop="16dp"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Performance of buying Leveraged S&amp;P 500 (SSO) only during VIX spikes (>25)."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingHorizontal="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"/>
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/report_growth"
+                android:background="#111111"
+                android:layout_marginBottom="24dp"/>
+
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. PARKING OPTIMIZATION"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="24dp"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comparison of holding Cash vs. Bonds vs. SPY while waiting for a crash."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingHorizontal="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"/>
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/report_parking"
+                android:background="#111111"
+                android:layout_marginBottom="24dp"/>
+
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. FINAL VERDICT vs MARKET"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="24dp"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full Strategy (SPY Parking + SSO Sniper) vs. Standard Buy &amp; Hold."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingHorizontal="24dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"/>
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/report_vs_market"
+                android:background="#111111"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Disclaimer: Past performance is not indicative of future results. Includes 0.1% commission simulation."
+                android:textColor="@color/text_tertiary"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:layout_marginTop="40dp"
+                android:paddingHorizontal="40dp"/>
+
+    </LinearLayout>
+</ScrollView>
