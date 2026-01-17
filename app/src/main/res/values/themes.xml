@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.VixSniper" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#6200EE</item>
-        <item name="colorPrimaryDark">#3700B3</item>
-        <item name="colorAccent">#03DAC5</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.VixSniper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#0A0A0A</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

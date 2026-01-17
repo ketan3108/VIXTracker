@@ -1,276 +1,479 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg_dark">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_app">
 
-    <ScrollView
+    <RelativeLayout
+            android:id="@+id/layoutHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="16dp">
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIX SNIPER PRO"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05"/>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                <View
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:background="@drawable/bg_card_dark"
+                        android:backgroundTint="@color/vix_green"/>
+
+                <TextView
+                        android:id="@+id/txtSystemStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" LIVE MONITORING"
+                        android:textColor="@color/vix_green"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+
+            <ImageView
+                    android:id="@+id/btnHistory"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_recent_history"
+                    android:padding="10dp"
+                    android:background="@drawable/bg_card_dark"
+                    app:tint="@color/text_secondary"
+                    android:layout_marginEnd="12dp"/>
+
+            <ImageView
+                    android:id="@+id/btnSettings"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_preferences"
+                    android:padding="10dp"
+                    android:background="@drawable/bg_card_dark"
+                    app:tint="@color/text_secondary"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_below="@id/layoutHeader"
+            android:layout_above="@id/layoutFooter">
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:clipToPadding="false"
+                android:paddingBottom="20dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_card_dark"
+                        android:padding="24dp"
+                        android:elevation="4dp">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="VOLATILITY INDEX"
+                                android:textColor="@color/text_tertiary"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.1"/>
+
+                        <TextView
+                                android:id="@+id/txtLastUpdate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Synced: --:--"
+                                android:textColor="@color/text_tertiary"
+                                android:textSize="10sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="bottom"
+                            android:layout_marginTop="8dp">
+
+                        <TextView
+                                android:id="@+id/txtVixValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="--.--"
+                                android:textSize="56sp"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"
+                                android:textColor="@color/text_primary"
+                                android:includeFontPadding="false"/>
+
+                        <Space android:layout_width="16dp" android:layout_height="wrap_content"/>
+
+                        <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingBottom="8dp">
+
+                            <TextView
+                                    android:id="@+id/txtVixChange"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="+0.00%"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/vix_green"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FEAR GAUGE"
+                            android:textColor="@color/text_tertiary"
+                            android:textSize="10sp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="8dp"/>
+
+                    <ProgressBar
+                            android:id="@+id/progressFearMeter"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:max="60"
+                            android:progress="0"
+                            android:progressDrawable="@drawable/progress_fear_meter"/>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_alert_banner"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                    <ImageView
+                            android:id="@+id/imgStrategyIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_dialog_alert"
+                            app:tint="@color/text_secondary"/>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+
+                        <TextView
+                                android:id="@+id/txtStrategyTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="SYSTEM STATUS"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                android:letterSpacing="0.05"
+                                android:textColor="@color/text_secondary"/>
+
+                        <TextView
+                                android:id="@+id/txtStrategy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Initializing..."
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="13sp"
+                                android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp">
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_card_dark"
+                            android:padding="16dp"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="6dp">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="S&amp;P 500"
+                                android:textColor="@color/text_tertiary"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                        <TextView
+                                android:id="@+id/txtSpyValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="---.--"
+                                android:textColor="@color/text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp"/>
+
+                        <TextView
+                                android:id="@+id/txtSpyChange"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00%"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_card_dark"
+                            android:padding="16dp"
+                            android:orientation="vertical"
+                            android:layout_marginStart="6dp">
+
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="LEVERAGE (SSO)"
+                                android:textColor="@color/vix_orange"
+                                android:textSize="10sp"
+                                android:textStyle="bold"/>
+
+                        <TextView
+                                android:id="@+id/txtSsoValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="---.--"
+                                android:textColor="@color/text_primary"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp"/>
+
+                        <TextView
+                                android:id="@+id/txtSsoChange"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.00%"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EXECUTION PLAN"
+                        android:textColor="@color/text_tertiary"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="12dp"/>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_card_dark"
+                        android:padding="16dp">
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+                        <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:text="CRISIS"
+                                android:textColor="@color/vix_red"
+                                android:textSize="12sp"
+                                android:textStyle="bold"/>
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="VIX > 45.0"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BUY 40%"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="12dp">
+                        <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:text="PANIC"
+                                android:textColor="@color/vix_orange"
+                                android:textSize="12sp"
+                                android:textStyle="bold"/>
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="VIX > 30.0"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BUY 30%"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                        <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:text="DIP"
+                                android:textColor="@color/vix_green"
+                                android:textSize="12sp"
+                                android:textStyle="bold"/>
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:text="VIX > 25.0"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"/>
+                        <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="BUY 30%"
+                                android:textColor="@color/text_primary"
+                                android:textStyle="bold"
+                                android:textSize="12sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+            android:id="@+id/layoutFooter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card_dark"
+            android:padding="24dp"
+            android:elevation="16dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DEPLOYABLE CAPITAL"
+                android:textColor="@color/text_tertiary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.1"/>
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
-
-            <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="24dp">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="VIX SNIPER SaaS"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:letterSpacing="0.2"
-                        android:textStyle="bold"
-                        android:layout_centerVertical="true"/>
-
-                <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_alignParentEnd="true">
-
-                    <ImageView
-                            android:id="@+id/btnHistory"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_recent_history"
-                            android:padding="4dp"
-                            app:tint="@color/text_primary"
-                            android:layout_marginEnd="16dp"/>
-
-                    <ImageView
-                            android:id="@+id/btnSettings"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@android:drawable/ic_menu_preferences"
-                            android:padding="4dp"
-                            app:tint="@color/text_primary"/>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@drawable/bg_card_dark"
-                    android:padding="24dp"
-                    android:elevation="8dp">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MARKET FEAR (VIX)"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp"
-                        android:textStyle="bold"/>
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginTop="8dp">
-
-                    <TextView
-                            android:id="@+id/txtVixValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="--.--"
-                            android:textSize="56sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_primary"/>
-
-                    <TextView
-                            android:id="@+id/txtVixChange"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+0.00%"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/vix_green"
-                            android:layout_marginStart="16dp"/>
-                </LinearLayout>
-
-                <TextView
-                        android:id="@+id/txtLastUpdate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Waiting for sync..."
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp"
-                        android:layout_marginTop="8dp"/>
-            </LinearLayout>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
 
             <TextView
-                    android:id="@+id/txtStrategy"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card_dark"
-                    android:text="Initializing Engine..."
-                    android:textColor="@color/text_primary"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:padding="20dp"
-                    android:layout_marginTop="12dp"
-                    android:elevation="4dp"/>
+                    android:text="$"
+                    android:textColor="@color/vix_green"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
-
-                <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card_dark"
-                        android:padding="16dp"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="6dp">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="S&amp;P 500 (SPY)"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="10sp"
-                            android:textStyle="bold"/>
-
-                    <TextView
-                            android:id="@+id/txtSpyValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="---.--"
-                            android:textColor="@color/text_primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp"/>
-
-                    <TextView
-                            android:id="@+id/txtSpyChange"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00%"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
-                            android:textStyle="bold"/>
-                </LinearLayout>
-
-                <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_card_dark"
-                        android:padding="16dp"
-                        android:orientation="vertical"
-                        android:layout_marginStart="6dp">
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2x LEVERAGE (SSO)"
-                            android:textColor="@color/vix_orange"
-                            android:textSize="10sp"
-                            android:textStyle="bold"/>
-
-                    <TextView
-                            android:id="@+id/txtSsoValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="---.--"
-                            android:textColor="@color/text_primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp"/>
-
-                    <TextView
-                            android:id="@+id/txtSsoChange"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.00%"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp"
-                            android:textStyle="bold"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+            <EditText
+                    android:id="@+id/inputCash"
+                    android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:minHeight="40dp"/>
-
-            <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@drawable/bg_card_dark"
-                    android:padding="20dp">
+                    android:background="@null"
+                    android:textColor="@color/text_primary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:inputType="numberDecimal"
+                    android:hint="0.00"
+                    android:textColorHint="@color/text_tertiary"
+                    android:paddingHorizontal="8dp"/>
 
-                <TextView
-                        android:id="@+id/txtSystemStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="● SYSTEM IDLE"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:gravity="end"
-                        android:layout_marginBottom="12dp"/>
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="AVAILABLE CAPITAL ($)"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="10sp"
-                        android:textStyle="bold"/>
-
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                    <EditText
-                            android:id="@+id/inputCash"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:textColor="@color/white"
-                            android:textSize="24sp"
-                            android:textStyle="bold"
-                            android:inputType="numberDecimal"
-                            android:hint="0.00"
-                            android:textColorHint="#555555"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"/>
-
-                    <Button
-                            android:id="@+id/btnSave"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:text="UPDATE"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:backgroundTint="@color/vix_green"
-                            android:textColor="@color/black"/>
-                </LinearLayout>
-            </LinearLayout>
-
+            <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="UPDATE"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/accent_blue"
+                    android:textColor="@color/white"/>
         </LinearLayout>
-    </ScrollView>
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+</RelativeLayout>
